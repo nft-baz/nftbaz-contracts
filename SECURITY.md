@@ -35,14 +35,14 @@ Include in your report:
 
 We run a public bug bounty on [Immunefi](https://immunefi.com/bounty/YOUR-PROGRAM).
 
-### Rewards
+### Rewards 
 
 | Severity | Reward |
 |----------|--------|
-| Critical | **$50,000 – $250,000** |
-| High | **$10,000 – $50,000** |
-| Medium | **$2,000 – $10,000** |
-| Low | **$500 – $2,000** |
+| Critical | **-** |
+| High | **-** |
+| Medium | **-** |
+| Low | **-** |
 
 ### Scope
 

@@ -1,4 +1,15 @@
-# 🎨 NFTBaz Smart Contracts
+# ⚡ Work in Progress
+
+This repository is under active development.
+
+Nothing is final yet — everything is subject to change.
+
+---
+
+
+# 🎨 NFTBaz Smart Contracts (**WIP**)
+
+
 
 > Production-grade smart contracts powering the NFTBaz NFT marketplace — fully open source, audited, and verified on-chain.
 
@@ -269,3 +280,11 @@ Built on the shoulders of giants:
 - 💬 Discord: https://discord.gg/nftbaz
 
 For security-only: **security@nftbaz.com** (encrypted with our [PGP key](./security-pgp.asc))
+
+
+
+## Feedback
+
+Issues and pull requests are welcome.
+
+> Built in public. Evolving fast.
