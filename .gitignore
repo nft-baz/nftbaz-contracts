@@ -1,0 +1,70 @@
+# ── Foundry / Solidity ──────────────────────────────────────────
+out/
+cache/
+broadcast/
+artifacts/
+coverage/
+*.cov
+lcov.info
+
+# ── Dependencies ──────────────────────────────────────────────
+lib/
+node_modules/
+
+# ── Secrets — NEVER COMMIT ────────────────────────────────────
+# Private keys, mnemonics, API keys
+.env
+.env.*
+!.env.example
+!.env.sample
+*.key
+*.keystore
+mnemonic.txt
+private-key.txt
+
+# Deployer wallets
+deployer-wallet.json
+multisig-keys.json
+
+# RPC API keys (in JSON/YAML form)
+alchemy-keys.json
+infura-keys.json
+getblock-keys.json
+etherscan-keys.txt
+
+# ── Build / IDE ─────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── OS junk ───────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ── Audit drafts (publish final only) ─────────────────────────
+audit/drafts/
+audit/*.draft.md
+audit/*.draft.pdf
+
+# ── Internal notes (not for publication) ──────────────────────
+NOTES.md
+TODO.private.md
+internal/
+
+# ── Generated docs ───────────────────────────────────────────
+docs/_book/
+docs/_site/
+
+# ── Slither / static analysis output ─────────────────────────
+slither-report.json
+slither-report.md
+crytic-export/

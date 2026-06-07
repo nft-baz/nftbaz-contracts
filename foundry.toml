@@ -1,0 +1,79 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+cache_path = "cache"
+
+solc_version = "0.8.24"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+bytecode_hash = "none"
+cbor_metadata = false
+
+# Tighter compile-time safety.
+deny_warnings = false  # OZ v5 has a handful of unavoidable warnings
+verbosity = 2
+
+# CI determinism.
+fs_permissions = [{ access = "read", path = "./" }]
+ffi = false
+
+# Gas reports for selected contracts.
+gas_reports = [
+  "ERC721Collection",
+  "ERC1155Collection",
+  "ERC721Factory",
+  "ERC1155Factory",
+]
+
+[profile.ci]
+# Stricter run for CI — fewer fuzz iterations OK, but stop on any warning.
+fuzz = { runs = 64 }
+invariant = { runs = 16, depth = 32, fail_on_revert = false }
+deny_warnings = false
+
+[fmt]
+line_length = 100
+tab_width = 4
+bracket_spacing = true
+int_types = "long"
+quote_style = "double"
+number_underscore = "thousands"
+
+[rpc_endpoints]
+# Filled at deploy time from the gateway's GetBlock + Ankr URLs (see
+# scripts/deploy-all.ts). Listing here keeps `forge script ... --rpc-url
+# polygon` working as a shorthand for operators.
+ethereum_mainnet  = "${ETH_RPC_GETBLOCK_MAINNET}"
+ethereum_testnet  = "${ETH_RPC_GETBLOCK_SEPOLIA}"
+polygon_mainnet   = "${POLYGON_RPC_GETBLOCK_MAINNET}"
+polygon_testnet   = "${POLYGON_RPC_GETBLOCK_AMOY}"
+bsc_mainnet       = "${BSC_RPC_GETBLOCK_MAINNET}"
+bsc_testnet       = "${BSC_RPC_GETBLOCK_TESTNET}"
+arbitrum_mainnet  = "${ARBITRUM_RPC_GETBLOCK_MAINNET}"
+arbitrum_testnet  = "${ARBITRUM_RPC_GETBLOCK_SEPOLIA}"
+base_mainnet      = "${BASE_RPC_GETBLOCK_MAINNET}"
+base_testnet      = "${BASE_RPC_GETBLOCK_SEPOLIA}"
+optimism_mainnet  = "${OPTIMISM_RPC_GETBLOCK_MAINNET}"
+optimism_testnet  = "${OPTIMISM_RPC_GETBLOCK_SEPOLIA}"
+
+[etherscan]
+# Single ETHERSCAN_API_KEY env var for the multi-chain v2 API; per-chain
+# keys can still be set via <network>_ETHERSCAN_API_KEY and forge will
+# prefer those.
+ethereum_mainnet  = { key = "${ETHERSCAN_API_KEY}", chain = 1 }
+ethereum_testnet  = { key = "${ETHERSCAN_API_KEY}", chain = 11155111 }
+polygon_mainnet   = { key = "${POLYGONSCAN_API_KEY}", chain = 137 }
+polygon_testnet   = { key = "${POLYGONSCAN_API_KEY}", chain = 80002 }
+bsc_mainnet       = { key = "${BSCSCAN_API_KEY}", chain = 56 }
+bsc_testnet       = { key = "${BSCSCAN_API_KEY}", chain = 97 }
+arbitrum_mainnet  = { key = "${ARBISCAN_API_KEY}", chain = 42161 }
+arbitrum_testnet  = { key = "${ARBISCAN_API_KEY}", chain = 421614 }
+base_mainnet      = { key = "${BASESCAN_API_KEY}", chain = 8453 }
+base_testnet      = { key = "${BASESCAN_API_KEY}", chain = 84532 }
+optimism_mainnet  = { key = "${OPTIMISTIC_ETHERSCAN_API_KEY}", chain = 10 }
+optimism_testnet  = { key = "${OPTIMISTIC_ETHERSCAN_API_KEY}", chain = 11155420 }

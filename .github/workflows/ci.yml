@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Cancel in-flight runs on the same PR/branch.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Show Foundry version
+        run: |
+          forge --version
+          cast --version
+          anvil --version
+
+      - name: Build contracts
+        run: forge build --sizes
+
+      - name: Run tests
+        run: forge test -vvv
+        env:
+          # Optional fork URLs for fork-tests (read-only)
+          ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
+          POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
+
+      - name: Run gas snapshot
+        run: forge snapshot --check || true
+
+      - name: Coverage
+        run: |
+          forge coverage --report lcov --report summary
+        continue-on-error: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./lcov.info
+          fail_ci_if_error: false
+
+  format:
+    name: Lint / format check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Forge fmt --check
+        run: forge fmt --check
+
+  build-sizes:
+    name: Contract size check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Build & assert sizes under EIP-170 limit
+        run: |
+          forge build --sizes 2>&1 | tee size-report.txt
+          # Fail if any contract is over 24576 bytes
+          if grep -E "([0-9]{5}) bytes" size-report.txt | awk '{print $1}' | grep -qE "^(2[5-9][0-9]{3}|[3-9][0-9]{4})$"; then
+            echo "❌ Contract size exceeds EIP-170 limit"
+            exit 1
+          fi
